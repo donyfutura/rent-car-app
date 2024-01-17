@@ -1,0 +1,93 @@
+contracts:
+  config:
+    rentCarContract:
+      contract-id: 4MW38iVLZ5Dp1crwckY7fn2o3H8yqaRgYMQihJuid8j2
+      image: registry.hub.docker.com/donyfutura/rent-car-contract-uniteller-final:2.0.0
+      imageHash: 0dcca07ce913f54454b4cdf335fe4b9309910c43ddaf2c9f3b306326ce7ebef4
+      version: 3
+      fee: 0
+      auto-update:
+        enabled: false
+        contractCreatorAddress: null
+    blackListContract:
+      contract-id: FVQhsav56kDYzrKopcgumX1VNhMy5rhqbE1Wve3hdEFX
+      image: registry.hub.docker.com/donyfutura/black-list-contract-uniteller:1.0.0
+      imageHash: 033ff888ca0b08bbc081b2065f2f9d95cd4ae91f2659b30d52a510cc3da9008d
+      version: 3
+      fee: 0
+      auto-update:
+        enabled: false
+        contractCreatorAddress: null
+
+node:
+  credentials-provider:
+    addresses:
+      3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM: H7lsPbOVkRKX7CUh
+  config:
+    node-0:
+      http:
+        xApiKey: vostok
+        xPrivacyApiKey: vostok
+        url: https://dgeorgiev-for-study.welocal.dev/node-0
+        loggerLevel: FULL
+        read-timeout: 30000
+
+rent-car:
+  db-schema: rent_car
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: ${rent-car.db-schema}
+        event:
+          merge:
+            entity_copy_observer: allow
+        jdbc:
+          time_zone: UTC
+          log.warnings: true
+          lob.non_contextual_creation: true
+    show-sql: false
+  application:
+    name: rent-car-app
+  datasource:
+    hikari:
+      schema: ${rent-car.db-schema}
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: 30000
+      pool-name: rent-car-app-jpa-pool
+      max-lifetime: 100000
+      connection-timeout: 30000
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/rent_car
+    username: postgres
+    password: docker
+  flyway:
+    enabled: true
+    schemas: ${rent-car.db-schema}
+    default-schema: ${rent-car.db-schema}
+
+tx-observer:
+  activation-height: 49356
+  queue-cleaner:
+    enabled: true
+  privacy-check:
+    enabled: true
+
+logging:
+  level:
+    com:
+      wavesenterprise:
+        sdk:
+          node:
+            client:
+              blocking:
+                tx:
+                  TxService:
+                    DEBUG
+
+server:
+  port: 8081

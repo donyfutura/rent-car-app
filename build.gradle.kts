@@ -12,8 +12,20 @@ val weSdkBomVersion: String by project
 val junitVersion: String by project
 val mockkVersion: String by project
 
+val springBootVersion: String by project
+val springCloudVersion: String by project
+val springCloudSecurityVersion: String by project
+val jacksonDatabindVersion: String by project
+val postgresVersion: String by project
+val feignCoreVersion: String by project
+val springdocVersion: String by project
+
+
 plugins {
     kotlin("jvm") apply false
+    kotlin("plugin.spring") apply false
+    kotlin("plugin.jpa") apply false
+    id("org.springframework.boot") apply false
     id("io.spring.dependency-management") apply false
 }
 
@@ -48,6 +60,9 @@ subprojects {
 
     the<DependencyManagementExtension>().apply {
         imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:$springBootVersion") {
+                bomProperty("kotlin.version", kotlinVersion)
+            }
             mavenBom("com.wavesenterprise:we-sdk-bom:$weSdkBomVersion") {
                 bomProperty("kotlin.version", kotlinVersion)
             }
@@ -58,6 +73,9 @@ subprojects {
             dependency("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonKotlinVersion")
             dependency("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion")
             dependency("net.java.dev.jna:jna:$jnaVersion")
+
+            dependency("org.postgresql:postgresql:$postgresVersion")
+            dependency("org.springdoc:springdoc-openapi-ui:$springdocVersion")
 
             dependency("io.mockk:mockk:$mockkVersion")
             dependency("org.junit.jupiter:junit-jupiter-api:$junitVersion")
