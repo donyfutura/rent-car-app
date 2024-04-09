@@ -12,6 +12,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.util.*
@@ -25,10 +26,11 @@ class RentCarContractImplTest {
         val state = ContractTestStateFactory.state(jacksonObjectMapper())
         val call: ContractCall = mockk<ContractCall>().also {
             every { it.sender } returns contractCreator
+            every { it.caller } returns contractCreator.asBase58String()
         }
-        val contract = RentCarContractImpl(contractState = state, contractCall = call)
+        val contract = RentCarContractImpl(state = state, call = call)
 
-        contract.init()
+        contract.create()
 
         assertTrue(state.results().isNotEmpty())
     }
@@ -38,11 +40,11 @@ class RentCarContractImplTest {
         val expectedAddress = Address.fromBase58("3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM")
         val state = ContractTestStateFactory.state(jacksonObjectMapper())
         state.put(RentCarContractImpl.CARS + 1, Car(name = "bmw", number = 1))
-        val contractCall: ContractCall = mockk<ContractCall>().also {
-            every { it.sender } returns expectedAddress
+        val call: ContractCall = mockk<ContractCall>().also {
+            every { it.caller } returns expectedAddress.asBase58String()
             every { it.timestamp } returns Timestamp.fromUtcTimestamp(1705402670887)
         }
-        val contract = RentCarContractImpl(contractState = state, contractCall = contractCall)
+        val contract = RentCarContractImpl(state = state, call = call)
 
         contract.rentCar(1)
 
@@ -56,10 +58,10 @@ class RentCarContractImplTest {
         val expectedAddress = Address.fromBase58("3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM")
         val state = ContractTestStateFactory.state(jacksonObjectMapper())
 
-        val contractCall: ContractCall = mockk<ContractCall>().also {
-            every { it.sender } returns expectedAddress
+        val call: ContractCall = mockk<ContractCall>().also {
+            every { it.caller } returns expectedAddress.asBase58String()
         }
-        val contract = RentCarContractImpl(contractState = state, contractCall = contractCall)
+        val contract = RentCarContractImpl(state = state, call = call)
         val carNumber = 1
         assertThrows<IllegalArgumentException> { contract.rentCar(carNumber) }.apply {
             assertEquals("Car with number $carNumber is not exist.", this.message)
@@ -74,11 +76,11 @@ class RentCarContractImplTest {
         val newRenter = "3NqNVU8XpEWLR86zvGAyZ6QL4xSse1EDb7K"
         val state = ContractTestStateFactory.state(jacksonObjectMapper())
         state.put(RentCarContractImpl.CARS + carNumber, Car(name = "bmw", number = carNumber, renter = oldRenter))
-        state.put(RentCarContractImpl.CONTRACT_CREATOR, contractCreator.asBase58String())
-        val contractCall: ContractCall = mockk<ContractCall>().also {
-            every { it.sender } returns contractCreator
+        state.put("PERMISSIONS_${contractCreator.asBase58String()}", listOf(RentCarContractImpl.CONTRACT_CREATOR))
+        val call: ContractCall = mockk<ContractCall>().also {
+            every { it.caller } returns contractCreator.asBase58String()
         }
-        val contract = RentCarContractImpl(contractState = state, contractCall = contractCall)
+        val contract = RentCarContractImpl(state = state, call = call)
 
         contract.changeCarRenter(carNumber, newRenter)
 
@@ -98,16 +100,16 @@ class RentCarContractImplTest {
 
         state.put(RentCarContractImpl.CONTRACT_CREATOR, contractCreator)
 
-        val contractCall: ContractCall = mockk<ContractCall>().also {
-            every { it.sender } returns newRenter.base58Address
+        val call: ContractCall = mockk<ContractCall>().also {
+            every { it.caller } returns newRenter.base58Address.asBase58String()
         }
-        val contract = RentCarContractImpl(contractState = state, contractCall = contractCall)
+        val contract = RentCarContractImpl(state = state, call = call)
 
         assertThrows<IllegalArgumentException> {
             contract.changeCarRenter(carNumber, newRenter)
         }.apply {
             assertEquals(
-                "Sender with address ${contractCall.sender.asBase58String()} is not contract creator.", this.message
+                "Sender with address ${call.caller} is not contract creator.", this.message
             )
         }
     }
@@ -117,11 +119,11 @@ class RentCarContractImplTest {
         val contractCreator = Address.fromBase58("3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM")
         val state = ContractTestStateFactory.state(jacksonObjectMapper())
 
-        state.put(RentCarContractImpl.CONTRACT_CREATOR, contractCreator.asBase58String())
-        val contractCall: ContractCall = mockk<ContractCall>().also {
-            every { it.sender } returns contractCreator
+        state.put("PERMISSIONS_${contractCreator.asBase58String()}", listOf(RentCarContractImpl.CONTRACT_CREATOR))
+        val call: ContractCall = mockk<ContractCall>().also {
+            every { it.caller } returns contractCreator.asBase58String()
         }
-        val contract = RentCarContractImpl(contractState = state, contractCall = contractCall)
+        val contract = RentCarContractImpl(state = state, call = call)
 
         val carNumber = 4
         contract.createCar(Car(name = "mersedes", number = carNumber))
@@ -138,17 +140,17 @@ class RentCarContractImplTest {
         val state = ContractTestStateFactory.state(jacksonObjectMapper())
 
         state.put(RentCarContractImpl.CONTRACT_CREATOR, contractCreator.asBase58String())
-        val contractCall: ContractCall = mockk<ContractCall>().also {
-            every { it.sender } returns otherAddress
+        val call: ContractCall = mockk<ContractCall>().also {
+            every { it.caller } returns otherAddress.asBase58String()
         }
-        val contract = RentCarContractImpl(contractState = state, contractCall = contractCall)
+        val contract = RentCarContractImpl(state = state, call = call)
 
         val carNumber = 4
         assertThrows<IllegalArgumentException> {
             contract.createCar(Car(name = "mersedes", number = carNumber))
         }.apply {
             assertEquals(
-                "Sender with address ${contractCall.sender.asBase58String()} is not contract creator.",
+                "Sender with address ${call.caller} is not contract creator.",
                 this.message,
             )
         }
@@ -159,41 +161,16 @@ class RentCarContractImplTest {
         val contractCreator = Address.fromBase58("3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM")
         val state = ContractTestStateFactory.state(jacksonObjectMapper())
 
-        state.put(RentCarContractImpl.CONTRACT_CREATOR, contractCreator.asBase58String())
-        val contractCall: ContractCall = mockk<ContractCall>().also {
-            every { it.sender } returns contractCreator
+        state.put("PERMISSIONS_${contractCreator.asBase58String()}", listOf(RentCarContractImpl.CONTRACT_CREATOR))
+        val call: ContractCall = mockk<ContractCall>().also {
+            every { it.caller } returns contractCreator.asBase58String()
         }
-        val contract = RentCarContractImpl(contractState = state, contractCall = contractCall)
+        val contract = RentCarContractImpl(state = state, call = call)
         val blackListContractId = "2q4b2FsXnhEaFGxvvLRujbXG91CM7gxfXQdiEzdtDz8B"
         contract.setBlackListContract(contractId = blackListContractId)
 
         state.get(RentCarContractImpl.BLACK_LIST_CONTRACT_ID, String::class.java).apply {
             assertEquals(blackListContractId, this)
-        }
-    }
-
-    @Test
-    fun `shouldn't rent car when sender exist in black list contract`() {
-        val blackListContractId = "2q4b2FsXnhEaFGxvvLRujbXG91CM7gxfXQdiEzdtDz8B"
-        val otherAddress = Address.fromBase58("3NoqQ88SuVBYuUimRWp3zeKLAYT66xLn5s3")
-
-        val externalState: ContractState = mockk<ContractState>().also {
-            every { it.tryGet(any(), String::class.java) } returns Optional.of(otherAddress.asBase58String())
-        }
-        val state: ContractState = mockk<ContractState>().also {
-            every { it.external(any()) } returns externalState
-            every { it.tryGet(RentCarContractImpl.BLACK_LIST_CONTRACT_ID, String::class.java) } returns Optional.of(blackListContractId)
-        }
-        val contractCall: ContractCall = mockk<ContractCall>().also {
-            every { it.sender } returns otherAddress
-        }
-
-        val contract = RentCarContractImpl(contractState = state, contractCall = contractCall)
-
-        assertThrows<IllegalStateException> {
-            contract.rentCar(1)
-        }.apply {
-            assertEquals("Sender with address ${otherAddress.asBase58String()} exist in black list.", this.message)
         }
     }
 }

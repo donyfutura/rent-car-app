@@ -1,34 +1,51 @@
 contracts:
   config:
     rentCarContract:
-      contract-id: 4MW38iVLZ5Dp1crwckY7fn2o3H8yqaRgYMQihJuid8j2
-      image: registry.hub.docker.com/donyfutura/rent-car-contract-uniteller-final:2.0.0
-      imageHash: 0dcca07ce913f54454b4cdf335fe4b9309910c43ddaf2c9f3b306326ce7ebef4
+      contract-id: BPPKXnUnJZYWwbLekVD8nx35VCyPckqzop5Ri6XkvybK
+      image: registry.hub.docker.com/donyfutura/rent-car-contract:2.0.0
+      imageHash: adcdefc696724a693548da95a28e21c90d87ae75d6d80fe41364d6e9aa47c2d0
       version: 3
       fee: 0
+      validation-enabled: true
       auto-update:
-        enabled: false
-        contractCreatorAddress: null
+        enabled: true
+        contractCreatorAddress: 3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM
     blackListContract:
-      contract-id: FVQhsav56kDYzrKopcgumX1VNhMy5rhqbE1Wve3hdEFX
-      image: registry.hub.docker.com/donyfutura/black-list-contract-uniteller:1.0.0
-      imageHash: 033ff888ca0b08bbc081b2065f2f9d95cd4ae91f2659b30d52a510cc3da9008d
+      contract-id: 8n2ovNAdyCg3PFPDER2ErVNyuVZMa8zK6oRaKudNeDbQ
+      image: registry.hub.docker.com/donyfutura/black-list-contract:1.0.0
+      imageHash: 0d4b2b6a5edc4f0547526c9c120cfed8d6f6f7db717003ce33c74c3fda87c8c4
       version: 3
       fee: 0
       auto-update:
-        enabled: false
-        contractCreatorAddress: null
+        enabled: true
+        contractCreatorAddress: 3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM
 
 node:
   credentials-provider:
     addresses:
       3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM: H7lsPbOVkRKX7CUh
+      3NqNVU8XpEWLR86zvGAyZ6QL4xSse1EDb7K: H7lsPbOVkRKX7CUh
+      3NoqQ88SuVBYuUimRWp3zeKLAYT66xLn5s3: H7lsPbOVkRKX7CUh
   config:
     node-0:
       http:
         xApiKey: vostok
         xPrivacyApiKey: vostok
         url: https://dgeorgiev-for-study.welocal.dev/node-0
+        loggerLevel: FULL
+        read-timeout: 30000
+    node-1:
+      http:
+        xApiKey: vostok
+        xPrivacyApiKey: vostok
+        url: https://dgeorgiev-for-study.welocal.dev/node-1
+        loggerLevel: FULL
+        read-timeout: 30000
+    node-2:
+      http:
+        xApiKey: vostok
+        xPrivacyApiKey: vostok
+        url: https://dgeorgiev-for-study.welocal.dev/node-2
         loggerLevel: FULL
         read-timeout: 30000
 
@@ -71,7 +88,7 @@ spring:
     default-schema: ${rent-car.db-schema}
 
 tx-observer:
-  activation-height: 49356
+  activation-height: 945600
   queue-cleaner:
     enabled: true
   privacy-check:

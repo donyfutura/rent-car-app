@@ -6,7 +6,7 @@ import com.wavesenterprise.sdk.contract.api.annotation.ContractInit
 interface RentCarContract {
 
     @ContractInit
-    fun init()
+    fun create()
 
     @ContractAction
     fun rentCar(carNumber: Int)

@@ -8,18 +8,29 @@ import com.wavesenterprise.sdk.contract.api.state.ContractState
 import com.wavesenterprise.sdk.contract.api.state.mapping.Mapping
 import com.wavesenterprise.sdk.contract.core.state.getValue
 import com.wavesenterprise.sdk.node.domain.contract.ContractId.Companion.base58ContractId
+import com.wavesenterprise.wrc.wrc10.WRC10RoleBasedAccessControl
+import com.wavesenterprise.wrc.wrc10.impl.WRC10RoleBasedAccessControlImpl
+import com.wavesenterprise.wrc.wrc10.impl.hasPermission
 
 @ContractHandler
-class RentCarContractImpl(
-    val contractState: ContractState,
-    val contractCall: ContractCall,
-) : RentCarContract {
+class RentCarContractImpl private constructor(
+    val state: ContractState,
+    val call: ContractCall,
+    val accessControl: WRC10RoleBasedAccessControlImpl,
+) : RentCarContract, WRC10RoleBasedAccessControl by accessControl {
 
-    val cars: Mapping<Car> by contractState
+    constructor(state: ContractState, call: ContractCall): this(
+        state = state,
+        call = call,
+        accessControl = WRC10RoleBasedAccessControlImpl(state, call)
+    )
 
-    override fun init() {
-        val contractCreatorAddress = contractCall.sender.asBase58String()
-        contractState.put(CONTRACT_CREATOR, contractCreatorAddress)
+    val cars: Mapping<Car> by state
+
+    override fun create() {
+        val contractCreatorAddress = call.caller
+        accessControl.init()
+        accessControl.grant(contractCreatorAddress, CONTRACT_CREATOR)
         cars.put(
             key = "1",
             value = Car(
@@ -44,11 +55,11 @@ class RentCarContractImpl(
     }
 
     override fun rentCar(carNumber: Int) {
-        val sender = contractCall.sender.asBase58String()
+        val sender = call.caller
         checkInBlackList(sender)
         val car = getIfExist(carNumber)
         car.renter = sender
-        car.date = contractCall.timestamp.utcTimestampMillis
+        car.date = call.timestamp.utcTimestampMillis
         cars.put("$carNumber", car)
     }
 
@@ -66,14 +77,14 @@ class RentCarContractImpl(
 
     override fun setBlackListContract(contractId: String) {
         isContractCreator()
-        contractState.put(BLACK_LIST_CONTRACT_ID, contractId)
+        state.put(BLACK_LIST_CONTRACT_ID, contractId)
     }
 
     private fun isContractCreator() {
-        val creator = contractState.get(CONTRACT_CREATOR, String::class.java)
-        if (creator != contractCall.sender.asBase58String()) {
+        val caller = call.caller
+        if (!accessControl.hasPermission(caller, CONTRACT_CREATOR)) {
             throw IllegalArgumentException(
-                "Sender with address ${contractCall.sender.asBase58String()} is not contract creator."
+                "Sender with address $caller is not contract creator."
             )
         }
     }
@@ -88,9 +99,9 @@ class RentCarContractImpl(
     }
 
     private fun checkInBlackList(address: String) {
-        val blackListContractIdOptional = contractState.tryGet(BLACK_LIST_CONTRACT_ID, String::class.java)
+        val blackListContractIdOptional = state.tryGet(BLACK_LIST_CONTRACT_ID, String::class.java)
         if (blackListContractIdOptional.isPresent) {
-            val externalState = contractState.external(blackListContractIdOptional.get().base58ContractId)
+            val externalState = state.external(blackListContractIdOptional.get().base58ContractId)
             val itemOptional = externalState.tryGet("BLACK_LIST_$address", String::class.java)
             if (itemOptional.isPresent) {
                 throw IllegalStateException("Sender with address $address exist in black list.")

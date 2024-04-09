@@ -12,7 +12,8 @@ dependencies {
 
     implementation("com.wavesenterprise:we-contract-sdk-grpc")
     implementation("com.wavesenterprise:we-contract-sdk-test")
-
+    implementation("com.wavesenterprise:wrc10-contract-api")
+    implementation("com.wavesenterprise:wrc10-contract-app")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 

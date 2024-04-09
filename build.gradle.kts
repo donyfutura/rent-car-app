@@ -2,6 +2,7 @@
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion: String by project
 val jnaVersion: String by project
@@ -81,6 +82,13 @@ subprojects {
             dependency("org.junit.jupiter:junit-jupiter-api:$junitVersion")
             dependency("org.junit.jupiter:junit-jupiter-params:$junitVersion")
             dependency("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+        }
+    }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all-compatibility")
+            jvmTarget = JavaVersion.VERSION_17.toString()
         }
     }
 }

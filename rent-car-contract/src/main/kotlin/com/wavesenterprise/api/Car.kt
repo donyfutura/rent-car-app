@@ -5,4 +5,5 @@ data class Car(
     val name: String,
     var renter: String? = null,
     var date: Long? = null,
+    val color: String? = null,
 )

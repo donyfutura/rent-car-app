@@ -63,7 +63,7 @@ class RentCarService(
 
     fun initRent(): String {
         val (tx) = rentCarContract.executeContract {
-            it.init()
+            it.create()
         }
         return tx.id.asBase58String()
     }
@@ -169,6 +169,8 @@ class RentCarService(
         const val ADD_OPERATION = "ADD"
         private val ADDRESSES = listOf(
             Address.fromBase58("3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM"),
+            Address.fromBase58("3NqNVU8XpEWLR86zvGAyZ6QL4xSse1EDb7K"),
+            Address.fromBase58("3NoqQ88SuVBYuUimRWp3zeKLAYT66xLn5s3"),
         )
     }
 }

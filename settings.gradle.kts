@@ -19,7 +19,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "rent-car-uniteller"
+rootProject.name = "rent-car-app"
 include(
     "rent-car-contract",
     "black-list-contract",

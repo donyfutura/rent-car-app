@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
@@ -20,6 +21,12 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 tasks.withType<ShadowJar> {
