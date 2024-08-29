@@ -2,9 +2,9 @@ package com.wavesenterprise.rent.config
 
 import com.wavesenterprise.sdk.node.client.blocking.credentials.SenderAddressProvider
 import com.wavesenterprise.sdk.node.domain.Address
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
-import javax.servlet.http.HttpServletRequest
 
 class HttpSenderAddressProvider : SenderAddressProvider {
 

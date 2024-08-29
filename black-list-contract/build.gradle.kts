@@ -30,6 +30,7 @@ java {
 }
 
 tasks.withType<ShadowJar> {
+    mergeServiceFiles()
     manifest {
         attributes["Main-Class"] = "com.wavesenterprise.BlackListContractStarterKt"
     }

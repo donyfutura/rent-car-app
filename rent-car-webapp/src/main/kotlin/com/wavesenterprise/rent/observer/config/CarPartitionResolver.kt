@@ -7,7 +7,7 @@ import com.wavesenterprise.sdk.node.domain.tx.CreatePolicyTx
 import com.wavesenterprise.sdk.node.domain.tx.ExecutedContractTx
 import com.wavesenterprise.sdk.node.domain.tx.PolicyDataHashTx
 import com.wavesenterprise.sdk.node.domain.tx.Tx
-import com.wavesenterprise.we.tx.observer.api.partition.TxQueuePartitionResolver
+import com.wavesenterprise.sdk.tx.observer.api.partition.TxQueuePartitionResolver
 import org.springframework.stereotype.Component
 
 @Component

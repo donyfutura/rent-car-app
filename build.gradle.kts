@@ -19,8 +19,9 @@ val springCloudSecurityVersion: String by project
 val jacksonDatabindVersion: String by project
 val postgresVersion: String by project
 val feignCoreVersion: String by project
-val springdocVersion: String by project
-
+val springdocoOpenapiStarterVersion: String by project
+val mavenUser: String? by project
+val mavenPassword: String? by project
 
 plugins {
     kotlin("jvm") apply false
@@ -37,6 +38,29 @@ allprojects {
     repositories {
         mavenCentral()
         mavenLocal()
+        maven {
+            name = "maven-snapshots"
+            url = uri("https://artifacts.wavesenterprise.com/repository/maven-snapshots/")
+            mavenContent {
+                snapshotsOnly()
+            }
+            credentials {
+                username = mavenUser
+                password = mavenPassword
+            }
+        }
+
+        maven {
+            name = "maven-releases"
+            url = uri("https://artifacts.wavesenterprise.com/repository/maven-releases/")
+            mavenContent {
+                releasesOnly()
+            }
+            credentials {
+                username = mavenUser
+                password = mavenPassword
+            }
+        }
     }
 }
 
@@ -71,12 +95,12 @@ subprojects {
         }
 
         dependencies {
+
             dependency("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonKotlinVersion")
             dependency("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion")
             dependency("net.java.dev.jna:jna:$jnaVersion")
-
             dependency("org.postgresql:postgresql:$postgresVersion")
-            dependency("org.springdoc:springdoc-openapi-ui:$springdocVersion")
+            dependency("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocoOpenapiStarterVersion")
 
             dependency("io.mockk:mockk:$mockkVersion")
             dependency("org.junit.jupiter:junit-jupiter-api:$junitVersion")

@@ -13,7 +13,7 @@ import com.wavesenterprise.sdk.node.domain.tx.ExecutedContractTx
 import com.wavesenterprise.sdk.node.domain.tx.PolicyDataHashTx
 import com.wavesenterprise.sdk.node.domain.tx.Tx
 import com.wavesenterprise.sdk.node.domain.tx.UpdateContractTx
-import com.wavesenterprise.we.tx.observer.api.tx.TxEnqueuePredicate
+import com.wavesenterprise.sdk.tx.observer.api.tx.TxEnqueuePredicate
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 

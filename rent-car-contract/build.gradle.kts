@@ -1,6 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-
 plugins {
     application
     java
@@ -24,6 +23,7 @@ dependencies {
 }
 
 tasks.withType<ShadowJar> {
+    mergeServiceFiles()
     manifest {
         attributes["Main-Class"] = "com.wavesenterprise.RentCarContractStarterKt"
     }

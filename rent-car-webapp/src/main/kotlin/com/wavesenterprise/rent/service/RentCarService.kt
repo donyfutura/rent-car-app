@@ -168,9 +168,9 @@ class RentCarService(
         const val OPERATION_KEY = "OPERATION"
         const val ADD_OPERATION = "ADD"
         private val ADDRESSES = listOf(
-            Address.fromBase58("3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM"),
-            Address.fromBase58("3NqNVU8XpEWLR86zvGAyZ6QL4xSse1EDb7K"),
-            Address.fromBase58("3NoqQ88SuVBYuUimRWp3zeKLAYT66xLn5s3"),
+            Address.fromBase58("3MQ3RhgAXcX7rTJYWa7iBcpwwwHYF769u33"),
+            Address.fromBase58("3MGQrkGvTdTsBaRa4bgH8pqq4rGJH11TinF"),
+            Address.fromBase58("3M2NNXaBgWqzHeufBhytAw2311Ls9zyksbu"),
         )
     }
 }

@@ -4,9 +4,9 @@ import com.wavesenterprise.rent.entity.CarPrivate
 import com.wavesenterprise.rent.observer.config.MappingPrefix.POLICY_PREFIX
 import com.wavesenterprise.rent.privacy.CarPrivacyContainer
 import com.wavesenterprise.rent.repository.CarPrivateRepository
-import com.wavesenterprise.we.tx.observer.api.privacy.PolicyFilter
-import com.wavesenterprise.we.tx.observer.api.privacy.PrivateDataEvent
-import com.wavesenterprise.we.tx.observer.api.tx.TxListener
+import com.wavesenterprise.sdk.tx.observer.api.tx.TxListener
+import com.wavesenterprise.sdk.tx.observer.api.privacy.PolicyFilter
+import com.wavesenterprise.sdk.tx.observer.api.privacy.PrivateDataEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component

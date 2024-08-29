@@ -8,9 +8,9 @@ import com.wavesenterprise.sdk.contract.api.state.ContractState
 import com.wavesenterprise.sdk.contract.api.state.mapping.Mapping
 import com.wavesenterprise.sdk.contract.core.state.getValue
 import com.wavesenterprise.sdk.node.domain.contract.ContractId.Companion.base58ContractId
-import com.wavesenterprise.wrc.wrc10.WRC10RoleBasedAccessControl
-import com.wavesenterprise.wrc.wrc10.impl.WRC10RoleBasedAccessControlImpl
-import com.wavesenterprise.wrc.wrc10.impl.hasPermission
+import com.wavesenterprise.sdk.wrc.wrc10.WRC10RoleBasedAccessControl
+import com.wavesenterprise.sdk.wrc.wrc10.impl.WRC10RoleBasedAccessControlImpl
+import com.wavesenterprise.sdk.wrc.wrc10.impl.hasPermission
 
 @ContractHandler
 class RentCarContractImpl private constructor(

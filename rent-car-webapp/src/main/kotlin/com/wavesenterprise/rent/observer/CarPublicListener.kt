@@ -3,9 +3,9 @@ package com.wavesenterprise.rent.observer
 import com.wavesenterprise.api.Car
 import com.wavesenterprise.rent.entity.CarPublic
 import com.wavesenterprise.rent.repository.CarPublicRepository
-import com.wavesenterprise.we.tx.observer.api.key.KeyEvent
-import com.wavesenterprise.we.tx.observer.api.key.KeyFilter
-import com.wavesenterprise.we.tx.observer.api.tx.TxListener
+import com.wavesenterprise.sdk.tx.observer.api.key.KeyEvent
+import com.wavesenterprise.sdk.tx.observer.api.key.KeyFilter
+import com.wavesenterprise.sdk.tx.observer.api.tx.TxListener
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 

@@ -1,51 +1,36 @@
 contracts:
   config:
     rentCarContract:
-      contract-id: BPPKXnUnJZYWwbLekVD8nx35VCyPckqzop5Ri6XkvybK
-      image: registry.hub.docker.com/donyfutura/rent-car-contract:2.0.0
-      imageHash: adcdefc696724a693548da95a28e21c90d87ae75d6d80fe41364d6e9aa47c2d0
+      contract-id: A1oNQZFwmqRekTiUej7fpyyxm95gCrUAinGPe5BUzJpw
+      image: registry.web3tech.ru/icore-sc/rent-car-contract-test:1.0.1
+      imageHash: a7e5b21f2f1fc5032650eaaa3a2b2e2490720bcce352f4cc08ebf08c33d09791
       version: 3
       fee: 0
-      validation-enabled: true
+      validation-enabled: false
       auto-update:
-        enabled: true
-        contractCreatorAddress: 3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM
+        enabled: false
+        contractCreatorAddress: 3MQ3RhgAXcX7rTJYWa7iBcpwwwHYF769u33
     blackListContract:
-      contract-id: 8n2ovNAdyCg3PFPDER2ErVNyuVZMa8zK6oRaKudNeDbQ
-      image: registry.hub.docker.com/donyfutura/black-list-contract:1.0.0
-      imageHash: 0d4b2b6a5edc4f0547526c9c120cfed8d6f6f7db717003ce33c74c3fda87c8c4
+      contract-id: B7rk3WzZMom78YXNM1WSmVSpqTTqkWPaQNorCNFoixvY
+      image: registry.web3tech.ru/icore-sc/black-list-contract-test:1.0.5
+      imageHash: 99cc84f9f500755f5cd9690ee862b4cb88d7f1f3c7d4c6e0c39f69a995702497
       version: 3
       fee: 0
       auto-update:
-        enabled: true
-        contractCreatorAddress: 3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM
+        enabled: false
+        contractCreatorAddress: 3MQ3RhgAXcX7rTJYWa7iBcpwwwHYF769u33
 
 node:
   credentials-provider:
     addresses:
-      3NqmRauaV87hhJPz1wzS6wx8kqWD5i7coCM: H7lsPbOVkRKX7CUh
-      3NqNVU8XpEWLR86zvGAyZ6QL4xSse1EDb7K: H7lsPbOVkRKX7CUh
-      3NoqQ88SuVBYuUimRWp3zeKLAYT66xLn5s3: H7lsPbOVkRKX7CUh
+      3MQ3RhgAXcX7rTJYWa7iBcpwwwHYF769u33: dP0Lm9hEnmVCr44A
+
   config:
     node-0:
       http:
-        xApiKey: vostok
-        xPrivacyApiKey: vostok
-        url: https://dgeorgiev-for-study.welocal.dev/node-0
-        loggerLevel: FULL
-        read-timeout: 30000
-    node-1:
-      http:
-        xApiKey: vostok
-        xPrivacyApiKey: vostok
-        url: https://dgeorgiev-for-study.welocal.dev/node-1
-        loggerLevel: FULL
-        read-timeout: 30000
-    node-2:
-      http:
-        xApiKey: vostok
-        xPrivacyApiKey: vostok
-        url: https://dgeorgiev-for-study.welocal.dev/node-2
+        xApiKey: udYk81TCtagSwUwg
+        xPrivacyApiKey: udYk81TCtagSwUwg
+        url: https://node
         loggerLevel: FULL
         read-timeout: 30000
 
@@ -81,14 +66,14 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://localhost:5432/rent_car
     username: postgres
-    password: docker
+    password: postgres
   flyway:
     enabled: true
     schemas: ${rent-car.db-schema}
     default-schema: ${rent-car.db-schema}
 
 tx-observer:
-  activation-height: 945600
+  activation-height: 3750000
   queue-cleaner:
     enabled: true
   privacy-check:

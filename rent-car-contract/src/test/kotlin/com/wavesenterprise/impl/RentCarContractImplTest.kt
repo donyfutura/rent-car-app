@@ -3,7 +3,6 @@ package com.wavesenterprise.impl
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.wavesenterprise.api.Car
 import com.wavesenterprise.sdk.contract.api.domain.ContractCall
-import com.wavesenterprise.sdk.contract.api.state.ContractState
 import com.wavesenterprise.sdk.contract.test.state.ContractTestStateFactory
 import com.wavesenterprise.sdk.node.domain.Address
 import com.wavesenterprise.sdk.node.domain.Address.Companion.base58Address
@@ -12,11 +11,8 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
-
 
 class RentCarContractImplTest {
 

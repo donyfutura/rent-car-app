@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM openjdk:17-alpine
 MAINTAINER Waves Enterprise <>
 
 ENV JAVA_MEM="-Xmx256M"
